@@ -195,4 +195,110 @@ body {
         <span class="memIcon">📚</span>
         <span class="memLabel">خوفچ وتفوقچ</span>
       </div>
-      <div class="memText" data-text="تذكرين لما دخلتِ عطلة الثالث خايفة ومتوترة على مستقبلچ الدراسي؟ 😌 وهسه إنتِ خامس علمي، وجبتِ درجات عالية تستاهلينها فعلاً. أنا شفت كل تعبچ وكل ليلة سهرتيها وياه، وفخور فيچ أكثر مما تتخيلين. إنتِ أقوى مما تحسبين نفسچ
+      <div class="memText" data-text="تذكرين لما دخلتِ عطلة الثالث خايفة ومتوترة على مستقبلچ الدراسي؟ 😌 وهسه إنتِ خامس علمي، وجبتِ درجات عالية تستاهلينها فعلاً. أنا شفت كل تعبچ وكل ليلة سهرتيها وياه، وفخور فيچ أكثر مما تتخيلين. إنتِ أقوى مما تحسبين نفسچ، وهذا الدليل."></div>
+      <div class="stamp">🌟</div>
+    </div>
+
+    <div class="memCard">
+      <div class="spotlight"></div>
+      <div class="goldCorner tl"></div>
+      <div class="goldCorner br"></div>
+      <div class="tape"></div>
+      <div class="memHeader">
+        <span class="memIcon">🤍</span>
+        <span class="memLabel">فترة الاختفاء</span>
+      </div>
+      <div class="memText" data-text="تذكرين تلك الفترة اللي اختفيتِ بيها، وأنا اختفيت وياچ؟ 🌧️ كانت أيام صعبة، صح، بس كل شي صار لمصلحتنا بالنهاية. هذيچ الفترة علمتنا شنو تعني بعض لبعض، وخلتنا نقدّر اللي بينّا أكثر. أحياناً السكوت يقرّب الناس أكثر من كلامها."></div>
+      <div class="stamp">🕊️</div>
+    </div>
+
+  </div>
+
+  <div class="finalNote">
+    كل ذكرى بينّا هي قطعة مني وياچ 💗<br>
+    وأجمل الذكريات لسا جاية
+  </div>
+
+  <a href="tuhibbeeni.html" class="askBtn" id="askBtn">💗 عندي سؤال بسيط... 💗</a>
+
+</div>
+
+<audio id="bgMusicMem">
+  <source src="song1.mp3" type="audio/mpeg">
+</audio>
+<button class="musicBtnMem" id="musicBtnMem" onclick="toggleMusicMem()">🔇 إيقاف</button>
+
+<script>
+function createHearts() {
+  const container = document.getElementById('heartsContainer');
+  const hearts = ['💖','💕','💗','💓','❤️'];
+  setInterval(() => {
+    const heart = document.createElement('div');
+    heart.className = 'heart';
+    heart.textContent = hearts[Math.floor(Math.random() * hearts.length)];
+    heart.style.left = Math.random() * 100 + '%';
+    heart.style.animationDuration = (Math.random() * 4 + 4) + 's';
+    heart.style.fontSize = (Math.random() * 14 + 14) + 'px';
+    container.appendChild(heart);
+    setTimeout(() => heart.remove(), 8000);
+  }, 500);
+}
+createHearts();
+
+const memPlaylist = ['song1.mp3', 'song2.mp3'];
+let memCurrentSong = 0;
+const bgMusicMem = document.getElementById('bgMusicMem');
+const musicBtnMem = document.getElementById('musicBtnMem');
+
+bgMusicMem.addEventListener('ended', function() {
+  memCurrentSong = (memCurrentSong + 1) % memPlaylist.length;
+  this.src = memPlaylist[memCurrentSong];
+  this.play();
+});
+
+function toggleMusicMem() {
+  if (bgMusicMem.paused) {
+    bgMusicMem.play(); musicBtnMem.textContent = '🔇 إيقاف';
+  } else {
+    bgMusicMem.pause(); musicBtnMem.textContent = '🎵 شغّل';
+  }
+}
+function tryAutoplayMem() {
+  bgMusicMem.play().then(() => { musicBtnMem.textContent = '🔇 إيقاف'; }).catch(() => {
+    musicBtnMem.textContent = '🎵 شغّل';
+    const startOnTouch = () => {
+      bgMusicMem.play().then(() => { musicBtnMem.textContent = '🔇 إيقاف'; });
+      document.removeEventListener('touchstart', startOnTouch);
+      document.removeEventListener('click', startOnTouch);
+    };
+    document.addEventListener('touchstart', startOnTouch, { once:true });
+    document.addEventListener('click', startOnTouch, { once:true });
+  });
+}
+tryAutoplayMem();
+
+function typeText(el, text, speed) {
+  el.textContent = '';
+  const cursor = document.createElement('span');
+  cursor.className = 'typedCursor';
+  el.appendChild(cursor);
+  let i = 0;
+  const interval = setInterval(() => {
+    if (i < text.length) {
+      cursor.insertAdjacentText('beforebegin', text[i]);
+      i++;
+    } else {
+      clearInterval(interval);
+      cursor.remove();
+    }
+  }, speed);
+}
+
+const cardDelays = [300, 1300, 2300];
+document.querySelectorAll('.memText').forEach((el, idx) => {
+  const text = el.getAttribute('data-text');
+  setTimeout(() => { typeText(el, text, 28); }, cardDelays[idx] + 550);
+});
+</script>
+</body>
+</html>
